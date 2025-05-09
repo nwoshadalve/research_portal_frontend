@@ -1,0 +1,138 @@
+<nav class="bg-gray-800 text-white w-full z-50 shadow-md fixed top-0 left-0 select-none">
+  <div
+    class="max-w-screen-xl mx-auto px-4 py-3 flex justify-between items-center"
+  >
+    <a routerLink="/" class="text-xl font-bold tracking-wide">Dataxense</a>
+
+    <button
+      class="md:hidden cursor-pointer transition-transform duration-300"
+      (click)="toggleMobileMenu()"
+    >
+      <mat-icon
+        class="transition-transform duration-300"
+        [class.rotate-180]="isMobileMenuOpen"
+      >
+        {{ isMobileMenuOpen ? "close" : "menu" }}
+      </mat-icon>
+    </button>
+
+    <!-- Desktop Navigation -->
+    <ul class="hidden md:flex gap-3 items-center text-sm">
+      <ng-container *ngFor="let item of navItems">
+        <li
+          *ngIf="item.subMenus; else singleLink"
+          class="relative group cursor-pointer"
+        >
+          <div
+            class="flex items-center gap-1 px-1.5 py-1 hover:bg-gray-700 rounded cursor-pointer transition duration-200"
+            (click)="toggleDropdown(item.name)"
+            [ngClass]="{ 'bg-gray-700 font-semibold': isSubMenuActive(item) }"
+          >
+            <span class="capitalize">{{ item.name }}</span>
+            <mat-icon
+              class="text-sm transition-transform duration-300"
+              [class.rotate-180]="activeDropdown === item.name"
+            >
+              keyboard_arrow_down
+            </mat-icon>
+          </div>
+          <ul
+            [class.opacity-0]="activeDropdown !== item.name"
+            [class.scale-95]="activeDropdown !== item.name"
+            [class.pointer-events-none]="activeDropdown !== item.name"
+            [class.opacity-100]="activeDropdown === item.name"
+            [class.scale-100]="activeDropdown === item.name"
+            [class.pointer-events-auto]="activeDropdown === item.name"
+            class="absolute left-0 mt-2 bg-white text-gray-800 shadow-lg rounded z-50 min-w-[220px] divide-y divide-gray-200 transition-all duration-300 ease-in-out origin-top transform"
+          >
+            <li *ngFor="let sub of item.subMenus">
+              <a
+                [routerLink]="sub.route"
+                routerLinkActive="bg-gray-100 font-medium"
+                class="block px-4 py-2 hover:bg-gray-100 capitalize cursor-pointer"
+                [routerLinkActiveOptions]="{ exact: true }"
+              >
+                {{ sub.name }}
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <ng-template #singleLink>
+          <li>
+            <a
+              [routerLink]="item.route"
+              routerLinkActive="bg-gray-700 font-medium"
+              class="capitalize px-2 py-1 rounded hover:bg-gray-700 cursor-pointer"
+              [routerLinkActiveOptions]="{ exact: true }"
+            >
+              {{ item.name }}
+            </a>
+          </li>
+        </ng-template>
+      </ng-container>
+    </ul>
+  </div>
+
+  <!-- Mobile Navigation -->
+  <div
+    class="md:hidden bg-gray-800 text-white transition-all duration-300 ease-in-out transform overflow-hidden"
+    [class.max-h-0]="!isMobileMenuOpen"
+    [class.max-h-[1000px]]="isMobileMenuOpen"
+  >
+    <ul class="flex flex-col divide-y divide-gray-700">
+      <ng-container *ngFor="let item of navItems">
+        <li *ngIf="item.subMenus; else mobileSingle" class="px-4 py-2">
+          <div
+            class="flex justify-between items-center cursor-pointer text-gray-300"
+            (click)="toggleDropdown(item.name)"
+            [ngClass]="{ 'text-white font-semibold': isSubMenuActive(item) }"
+          >
+            <span class="capitalize">{{ item.name }}</span>
+            <mat-icon
+              class="text-sm transition-transform duration-300"
+              [class.rotate-180]="activeDropdown === item.name"
+            >
+              keyboard_arrow_down
+            </mat-icon>
+          </div>
+
+          <ul
+            [class.max-h-0]="activeDropdown !== item.name"
+            [class.max-h-[500px]]="activeDropdown === item.name"
+            [class.opacity-0]="activeDropdown !== item.name"
+            [class.opacity-100]="activeDropdown === item.name"
+            [class.pointer-events-none]="activeDropdown !== item.name"
+            class="transition-all duration-300 ease-in-out overflow-hidden mt-2 text-sm divide-y divide-gray-700"
+          >
+            <li *ngFor="let sub of item.subMenus" class="pl-4">
+              <a
+                [routerLink]="sub.route"
+                (click)="handleMobileNavigation()"
+                routerLinkActive="text-white font-medium"
+                class="block py-2 capitalize hover:text-white text-gray-300 cursor-pointer transition duration-200"
+                [routerLinkActiveOptions]="{ exact: true }"
+              >
+                {{ sub.name }}
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <ng-template #mobileSingle>
+          <li class="px-4 py-2">
+            <a
+              [routerLink]="item.route"
+              (click)="handleMobileNavigation()"
+              routerLinkActive="text-white font-semibold"
+              class="block capitalize hover:text-white text-gray-300 cursor-pointer"
+              [routerLinkActiveOptions]="{ exact: true }"
+            >
+              {{ item.name }}
+            </a>
+          </li>
+        </ng-template>
+      </ng-container>
+    </ul>
+  </div>
+</nav>

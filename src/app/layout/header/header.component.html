@@ -1,0 +1,133 @@
+<div class="bg-gradient-to-r from-slate-800 to-slate-900 text-white py-[6rem] px-4 shadow-md">
+  <div class="container mx-auto">
+    <!-- Journal Title -->
+    <h1 class="text-3xl md:text-4xl font-bold text-center">
+      <a routerLink="/" class="hover:text-sky-300 transition duration-300">
+        {{ journalTitle }}
+      </a>
+    </h1>
+    
+    <!-- Journal Logo (Optional) -->
+    <div class="flex justify-center mt-3">
+      <div class="h-1 w-24 bg-sky-500 rounded-full"></div>
+    </div>
+    
+    <!-- Credentials Row - Modified for better wrapping -->
+    <div class="text-sm md:text-base text-center mt-5 text-slate-200">
+      <!-- Use flex-wrap with inline-flex to prevent awkward breaks -->
+      <div class="flex flex-wrap justify-center">
+        <ng-container *ngFor="let credential of journalCredentials; let i = index">
+          <!-- Each credential in its own container -->
+          <div class="flex items-center mx-2 my-1 whitespace-nowrap">
+            <ng-container *ngIf="credential.link; else noLink">
+              <!-- Use routerLink for internal links -->
+              <a 
+                *ngIf="!credential.isExternalLink; else externalLink" 
+                [routerLink]="credential.link"
+                class="flex items-center hover:text-sky-300 transition duration-300">
+                <mat-icon class="text-sky-400 mr-1" 
+                  style="font-size: 16px; height: 16px; width: 16px; color: rgb(56 189 248);">
+                  {{ credential.icon }}
+                </mat-icon>
+                {{ credential.text }}
+              </a>
+              
+              <!-- Use href for external links -->
+              <ng-template #externalLink>
+                <a 
+                  [href]="credential.link" 
+                  [target]="credential.openInNewTab ? '_blank' : '_self'" 
+                  [rel]="credential.openInNewTab ? 'noopener noreferrer' : ''"
+                  class="flex items-center hover:text-sky-300 transition duration-300">
+                  <mat-icon class="text-sky-400 mr-1" 
+                    style="font-size: 16px; height: 16px; width: 16px; color: rgb(56 189 248);">
+                    {{ credential.icon }}
+                  </mat-icon>
+                  {{ credential.text }}
+                </a>
+              </ng-template>
+            </ng-container>
+            
+            <!-- No link template -->
+            <ng-template #noLink>
+              <span class="flex items-center">
+                <mat-icon class="text-sky-400 mr-1" 
+                  style="font-size: 16px; height: 16px; width: 16px; color: rgb(56 189 248);">
+                  {{ credential.icon }}
+                </mat-icon>
+                {{ credential.text }}
+              </span>
+            </ng-template>
+          </div>
+          
+          <!-- Add separator between items but not after the last -->
+          <div *ngIf="i < journalCredentials.length - 1" class="hidden md:flex items-center mx-1">
+            <span class="text-slate-400">•</span>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    
+    <!-- Publication Info Row - Same structure as credentials -->
+    <div class="text-sm md:text-base text-center mt-3 text-slate-200">
+      <div class="flex flex-wrap justify-center">
+        <ng-container *ngFor="let info of journalPublicationInfo; let i = index">
+          <div class="flex items-center mx-2 my-1 whitespace-nowrap">
+            <ng-container *ngIf="info.link; else noInfoLink">
+              <!-- Use routerLink for internal links -->
+              <a 
+                *ngIf="!info.isExternalLink; else externalInfoLink" 
+                [routerLink]="info.link"
+                class="flex items-center hover:text-sky-300 transition duration-300">
+                <mat-icon class="text-sky-400 mr-1" 
+                  style="font-size: 16px; height: 16px; width: 16px; color: rgb(56 189 248);">
+                  {{ info.icon }}
+                </mat-icon>
+                {{ info.text }}
+              </a>
+              
+              <!-- Use href for external links -->
+              <ng-template #externalInfoLink>
+                <a 
+                  [href]="info.link" 
+                  [target]="info.openInNewTab ? '_blank' : '_self'" 
+                  [rel]="info.openInNewTab ? 'noopener noreferrer' : ''"
+                  class="flex items-center hover:text-sky-300 transition duration-300">
+                  <mat-icon class="text-sky-400 mr-1" 
+                    style="font-size: 16px; height: 16px; width: 16px; color: rgb(56 189 248);">
+                    {{ info.icon }}
+                  </mat-icon>
+                  {{ info.text }}
+                </a>
+              </ng-template>
+            </ng-container>
+            
+            <!-- No link template -->
+            <ng-template #noInfoLink>
+              <span class="flex items-center">
+                <mat-icon class="text-sky-400 mr-1" 
+                  style="font-size: 16px; height: 16px; width: 16px; color: rgb(56 189 248);">
+                  {{ info.icon }}
+                </mat-icon>
+                {{ info.text }}
+              </span>
+            </ng-template>
+          </div>
+          
+          <!-- Add separator between items but not after the last -->
+          <div *ngIf="i < journalPublicationInfo.length - 1" class="hidden md:flex items-center mx-1">
+            <span class="text-slate-400">•</span>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    
+    <!-- Page Title and Description (non-home pages only) -->
+    <div class="mt-6 text-center" *ngIf="!isHomePage && currentPageTitle">
+      <div class="inline-block bg-slate-700/50 px-6 py-3 rounded-lg">
+        <h2 class="text-xl md:text-2xl font-semibold text-white mb-1">{{ currentPageTitle }}</h2>
+        <p class="text-sm text-slate-300" *ngIf="currentPageDescription">{{ currentPageDescription }}</p>
+      </div>
+    </div>
+  </div>
+</div>

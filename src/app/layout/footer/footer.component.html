@@ -1,0 +1,44 @@
+<footer class="bg-gray-900 text-gray-300 pt-8 pb-6">
+    <div class="max-w-screen-xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 text-center sm:text-left">
+      <div *ngFor="let section of footerItems">
+        <h3 class="text-white font-semibold mb-4 capitalize text-lg sm:text-xl">
+          {{ section.name }}
+        </h3>
+        <ul class="space-y-3">
+          <li *ngFor="let item of section.menus">
+            <ng-container *ngIf="item.route; else externalLink">
+              <a
+                [routerLink]="item.route"
+                class="transition-colors duration-200 text-base block"
+                [ngClass]="{
+                  'hover:text-white': true,
+                  'capitalize': section.name.toLowerCase() === 'quick links'
+                }"
+              >
+                {{ item.name }}
+              </a>
+            </ng-container>
+            <ng-template #externalLink>
+              <a
+                [href]="item.url"
+                [target]="item.openInNewTab ? '_blank' : '_self'"
+                rel="noopener noreferrer"
+                class="transition-colors duration-200 text-base block"
+                [ngClass]="{
+                  'hover:text-white': true,
+                  'capitalize': section.name.toLowerCase() === 'quick links'
+                }"
+              >
+                {{ item.name }}
+              </a>
+            </ng-template>
+          </li>
+        </ul>
+      </div>
+    </div>
+  
+    <div class="text-center mt-8 text-sm text-gray-500 border-t border-gray-700 pt-4">
+      &copy; {{ getCurrentYear() }} Dataxense Journal. All rights reserved.
+    </div>
+  </footer>
+  

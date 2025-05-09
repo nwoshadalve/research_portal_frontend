@@ -1,0 +1,42 @@
+<div class="bg-gray-100 min-h-screen">
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="flex justify-center items-center py-20">
+      <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-sky-500"></div>
+    </div>
+  
+    <!-- Error State - No Data -->
+    <div *ngIf="!isLoading && sections.length === 0" class="container mx-auto px-4 py-16 text-center">
+      <h2 class="text-2xl text-gray-800 font-semibold mb-4">No content available</h2>
+      <p class="text-gray-600">Please check back later for updates.</p>
+    </div>
+  
+    <!-- Content Sections -->
+    <div *ngIf="!isLoading && sections.length > 0" class="container mx-auto px-4 py-8 max-w-6xl">
+      <section *ngFor="let section of sections; let i = index" class="mb-12">
+        <!-- Centered Card Design -->
+        <div class="bg-white rounded-lg overflow-hidden shadow-lg">
+          
+          <!-- Section Title (Centered, Full Width) -->
+          <div class="p-6 text-center bg-gray-50 border-b border-gray-100">
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2 word-wrap-fix">
+              {{ section.title }}
+            </h2>
+            
+            <!-- Visual divider (centered) -->
+            <div class="h-1 w-24 bg-sky-500 rounded-full mx-auto mt-2"></div>
+          </div>
+          
+          <!-- Section Content (Full Width) with proper word wrapping -->
+          <div class="p-6 md:p-8">
+            <!-- Processed HTML content with enhanced word wrapping -->
+            <div class="processed-content word-wrap-fix" 
+                 [innerHTML]="section.processedContent" 
+                 #contentSection 
+                 appInternalLink 
+                 >
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
